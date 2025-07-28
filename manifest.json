@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "locale": "en_US",
+  "platform": "4.4.2",
+  "metadata": {
+    "appmode": "static",
+    "primary_rmd": null,
+    "primary_html": "week1_quiz/week1-intro-r-learnr.html",
+    "content_category": null,
+    "has_parameters": false
+  },
+  "packages": null,
+  "files": {
+    "README.md": {
+      "checksum": "42c11390e700f03d8a8203e83f5cfe0b"
+    },
+    "week1_quiz/week1-intro-r-learnr.html": {
+      "checksum": "2dbcd5a5163cc30d70898c068425ab8e"
+    },
+    "week1_quiz/week1-intro-r-learnr.Rmd": {
+      "checksum": "026a6f727cf3d539f475fe8d6ce415b4"
+    },
+    "week1_quiz/week1_homework.txt": {
+      "checksum": "1b5d70ea0392876b347d0de833ce5f37"
+    }
+  },
+  "users": null
+}
