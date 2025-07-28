@@ -1,0 +1,31 @@
+# Week 1 Homework: Data Cleaning in R
+
+## Objective:
+Apply your knowledge of R syntax, data structures, and basic cleaning operations.
+
+## Task:
+1. Download this CSV file: https://pos.it/r4ds-students-csv
+2. Load the data using `readr::read_csv()`.
+3. Clean the column names using `janitor::clean_names()`.
+4. Convert the `meal_plan` column to a factor.
+5. Convert the `age` column to numeric (fix "five" to 5).
+6. Create a new column `age_group`:
+   - "Under 6" if age < 6
+   - "6 and above" otherwise
+7. Save the cleaned data to a new CSV file.
+
+## Deliverables:
+- Your R script (`.R` or `.Rmd`) with code and comments.
+- The final cleaned CSV file.
+
+## Grading Rubric (10 points total):
+
+| Task                                           | Points |
+|------------------------------------------------|--------|
+| Load and inspect the dataset                   | 1      |
+| Clean column names                             | 1      |
+| Convert `meal_plan` to factor                  | 2      |
+| Fix and convert `age`                          | 2      |
+| Create `age_group` column                      | 2      |
+| Save output as CSV                             | 1      |
+| Code clarity and commenting                    | 1      |
