@@ -1,5 +1,6 @@
 ---
 title: "Quiz: Intro to R"
+author: Ifeoma Egbogah
 output: learnr::tutorial
 runtime: shiny_prerendered
 tutorial:
