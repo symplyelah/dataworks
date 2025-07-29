@@ -89,8 +89,6 @@ To earn a certificate of completion, you must:
 
 * Submit and present the final project
 
----
-
 
 ## 🔐 License
 This course and all related materials are © 2025 [Ifeoma Egbogah/Zelah DataWorks] and provided under the MIT License. You're free to reuse for learning and teaching with attribution.
