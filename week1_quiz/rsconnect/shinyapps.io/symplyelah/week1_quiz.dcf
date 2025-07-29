@@ -1,0 +1,10 @@
+name: week1_quiz
+title:
+username: symplyelah
+account: symplyelah
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15133183
+bundleId: 10691478
+url: https://symplyelah.shinyapps.io/week1_quiz/
+version: 1
