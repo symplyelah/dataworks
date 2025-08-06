@@ -1,0 +1,358 @@
+---
+title: "Week 2: Data Cleaning and Wrangling"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+
+library(learnr)
+library(tidyverse)
+library(here)
+
+tutorial_options(exercise.timelimit = 60)
+```
+
+# Week 2
+
+Welcome to **Week 2** of your data science journey! In this module, you'll learn how to clean and reshape your data using `tidyverse` tools.
+
+> 💡 Remember: Most datasets in the real world are *messy*. Your job is to tidy them for effective analysis.
+
+
+
+### What is Tidy Data?
+
+Tidy data has:
+- Each **variable** in a column
+- Each **observation** in a row
+- Each **value** in a single cell
+
+::: {.alert alert-info}
+📌 This standard makes your data easier to manipulate, visualize, and model.
+:::
+
+## Reshaping Data
+
+### Columns with Multiple Values
+
+Use `separate()` 
+
+```{r tidy-question, exercise=TRUE}
+# Fix this dataset to be tidy.
+# Try splitting Name_Age and Fever_Symptom into two separate columns
+# Hint: Use separate() to fix the duration column
+
+patient_summary <- tibble::tibble(
+  Name_Age = c("John-32", "Lara-45", "Ben-28", "Zoe-40"),
+  Gender = c("M", "F", "M", "F"),
+  Visit_Date = c("2025-08-01", "2025-08-01", "2025-08-02", "2025-08-02"),
+  Fever_Symptom = c("Yes-High", "No-", "Yes-Low", "Yes-Medium")
+)
+
+
+# Your code here
+```
+
+
+```{r tidy-question-solution, echo=FALSE}
+patient_summary %>%
+  separate(Name_Age, into = c("Name", "Age"), sep = "-") %>%
+  separate(Fever_Symptom, into = c("Fever", "Symptom"), sep = "-")
+```
+
+```{r reshape-question, exercise=TRUE}
+# Separate time into hour and minute
+
+flight_schedule <- tibble::tibble(
+  flight = c("AZ101", "BA202", "DL303"),
+  departure = c("08:45 AM", "12:15 PM", "06:30 PM"),
+  gate = c("A1", "B3", "C2")
+)
+
+# Your code here
+```
+
+
+```{r reshape-question-solution, echo=FALSE}
+flight_schedule %>%
+  separate(departure, into = c("hour", "minute"), sep = ":")
+```
+
+
+```{r reshape-question2, exercise=TRUE}
+
+# Separate the minute into minutes and time of day
+
+flight_schedule <- tibble::tibble(
+  flight = c("AZ101", "BA202", "DL303"),
+  departure = c("08:45 AM", "12:15 PM", "06:30 PM"),
+  gate = c("A1", "B3", "C2")
+)%>%
+  separate(departure, into = c("hour", "minute"), sep = ":")
+
+```
+
+```{r reshape-question2-solution, echo=FALSE}
+
+flight_schedule %>%
+  separate(minute, into = c("minute", "time_of_day"), sep = " ")
+
+```
+
+### Separate Rows from Multi-Value Cell
+Use `separate_rows()` when multiple values in a cell should each be in a row.
+```{r multi-Value, exercise=TRUE}
+# Separate student names into rows
+
+school_subjects <- tibble::tibble(
+  subject = c("Math", "Science", "Literature"),
+  students = c("Ali, Bola, Chi", "Tola, Emma", "Ngozi, Ken, Lara")
+)
+
+# Your code here
+
+```
+
+
+```{r multi-Value-solution, echo=FALSE}
+school_subjects %>%
+  separate_rows(students, sep = ", ")
+```
+
+## Combining Columns
+
+Use `unite()` to merge columns into one.
+
+```{r combine-question, exercise=TRUE}
+# Combine first and last name into a 'name' column separated by a space
+
+customer_name <- tibble::tibble(
+  first_name = c("Mary", "James", "Aisha"),
+  last_name = c("Johnson", "Brown", "Ahmed"),
+  country = c("USA", "UK", "Nigeria")
+)
+
+
+# Your code here
+```
+
+
+```{r combine-question-solution, echo=FALSE}
+customer_name %>%
+  unite("full_name", first_name, last_name, sep = " ")
+```
+
+
+
+You work for a multinational company that uses auto-dialer software to contact its customers. When new customers subscribe online, they are asked for a phone number but they often forget to add the country code needed for international calls. You were asked to fix this issue in the database. You’ve been given a data frame with national numbers and country codes named phone_nr_df. Now you want to combine the country_code and national_number columns to create valid international numbers.
+
+```{r international-numbers, exercise=TRUE}
+
+phone_nr_df <- tribble(~country, ~country_code, ~national_number,
+                       "USA",            +1, 2025550117,     
+                       "United Kingdom", +44, 1632960924,    
+                       "Brazil",         +55, 95552452220, 
+                       "Australia",      +61, 1900654321, 
+                       "China",          +86, 13555953217, 
+                       "India",          +91, 8555843898)
+
+```
+
+```{r international-numbers-solution, echo=FALSE}
+
+
+phone_nr_df %>% 
+  unite("international_number", country_code, national_number, sep = "")
+```
+
+The drink_df data set includes a variable that has the quantities and units of ingredients used in making each drink. Now you want to create an overview of how much of each ingredient you should buy to make these drinks.
+
+Inspect drink_df and find the right separator in the ingredient's column.
+Separate the ingredients column so that for each drink and each ingredient gets a row.
+
+```{r drink, exercise=TRUE}
+
+drink_df <- tribble(~drink, ~ingredients,                                 
+                    "Chocolate milk",  "milk 0.3 L; chocolate 40 g; sugar 10 g",  
+                    "Orange juice",   "oranges 3; sugar 20 g",                  
+                    "Cappuccino",     "milk 0.1 L; water 0.1 L; coffee 30 g; sugar 5 g")
+
+
+```
+
+
+```{r drink-solution, echo=FALSE}
+
+drink_df %>% 
+  separate_rows(ingredients, sep = "; ", convert = TRUE)
+
+```
+
+Inspect the output of the previous step to find the separator that splits the ingredients column into three columns: ingredient, quantity, and unit.
+Make sure to convert data types to numeric when possible.
+Group the data by ingredient and unit.
+Calculate the total quantity of each ingredient.
+
+
+```{r drink2, exercise=TRUE}
+
+drink_df <- tribble(~drink, ~ingredients,                                 
+                    "Chocolate milk",  "milk 0.3 L; chocolate 40 g; sugar 10 g",  
+                    "Orange juice",   "oranges 3; sugar 20 g",                  
+                    "Cappuccino",     "milk 0.1 L; water 0.1 L; coffee 30 g; sugar 5 g")
+
+
+```
+
+
+
+```{r drink2-solution, echo=FALSE}
+
+drink_df %>% 
+  separate_rows(ingredients, sep = "; ") %>% 
+  separate(ingredients, into = c("ingredients", "quantity", "unit"), sep = " ", convert = TRUE) %>% 
+  group_by(ingredients, unit) %>% 
+  summarise(total = sum(quantity))
+
+```
+
+
+## Missing Values
+
+Use `is.na()`, `sum()`, `complete.cases()`, `replace_na()`, and `fill()` to identify and handle missing data.
+
+```{r missing-values, exercise=TRUE}
+# Count NAs
+
+covid_cases <- tibble::tibble(
+  state = c("Lagos", "Kano", "Abuja", "Enugu"),
+  confirmed = c(2345, NA, 1500, NA),
+  recovered = c(1200, 800, NA, NA)
+)
+
+
+# Your code here
+```
+
+
+```{r missing-values-solution, echo=FALSE}
+sum(is.na(covid_cases))
+```
+
+
+### Impute with zeros
+```{r missing-values2, exercise=TRUE}
+
+# Replace NA with 0
+
+covid_cases <- tibble::tibble(
+  state = c("Lagos", "Kano", "Abuja", "Enugu"),
+  confirmed = c(2345, NA, 1500, NA),
+  recovered = c(1200, 800, NA, NA)
+)
+
+# Your code here
+
+```
+
+
+
+```{r missing-values2-solution, echo=FALSE}
+covid_cases %>%
+  replace_na(list(confirmed = 0, recovered = 0))
+```
+
+## Pivoting: From Wide to Long
+
+Use `pivot_longer()` when column names represent variables (e.g. countries).
+
+```{r pivot-question, exercise=TRUE}
+# Convert to long format
+
+sales_wide <- tibble::tibble(
+  region = c("North", "South", "East"),
+  Q1 = c(10000, 12000, 9500),
+  Q2 = c(11000, 12500, 10500),
+  Q3 = c(11500, 13000, 10200),
+  Q4 = c(12000, 13500, 11000)
+)
+
+
+# Your code here
+```
+
+
+```{r pivot-question-solution, echo=FALSE}
+
+sales_wide %>%
+  pivot_longer(cols = Q1:Q4, names_to = "quarter", values_to = "sales")
+
+```
+
+
+
+## Integrate Data with Joins
+### Perform a left join
+
+```{r left-join, exercise=TRUE}
+
+# Perform a left join
+
+employee_info <- tibble::tibble(
+  emp_id = c(101, 102, 103),
+  name = c("Tunde", "Ada", "Ola"),
+  department = c("Logistics", "HR", "Finance")
+)
+
+employee_salary <- tibble::tibble(
+  emp_id = c(101, 102, 104),
+  monthly_salary = c(250000, 200000, 300000)
+)
+
+# Your code here
+```
+
+
+
+```{r left-join-solution, echo=FALSE}
+employee_info %>%
+  left_join(employee_salary, by = "emp_id")
+```
+
+
+## Challenge
+
+### 
+
+```{r quiz2, echo=FALSE}
+
+quiz(
+  question("Which of these is NOT part of tidy data?",
+    answer("Each variable is in its own column"),
+    answer("Each observation is in a column", correct = TRUE),
+    answer("Each value is in its own cell"),
+    answer("Each row is an observation")
+  ),
+  question("Which function is used to split a column?",
+    answer("unite()"),
+    answer("separate()", correct = TRUE),
+    answer("pivot_wider()"),
+    answer("fill()")
+  )
+)
+```
+
+## Summary
+
+Today you learned how to:
+- Structure your data using `tidyverse`
+- Use `separate()`, `separate_rows()`, `unite()`
+- Handle missing values with `replace_na()` and `fill()`
+- Reshape your data using `pivot_longer()`
+
+You’re one step closer to becoming a tidyverse pro! 🧹
+
+Try applying these skills to your own dataset using `read_csv()` and wrangle it based on what you’ve learned!
+
+
