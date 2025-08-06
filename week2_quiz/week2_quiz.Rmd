@@ -296,7 +296,7 @@ sales_df<- tribble(~year, ~quarter, ~sales,
 ```{r fill-solution, echo=FALSE}
 
 sales_df %>%
-  fill() %>%  # Impute the year column
+  fill(year, .direction = "up") %>%    # Impute the year column
   ggplot(aes(x = quarter, y = sales, color = year, group = year)) +
   geom_line() # Create a line plot with sales per quarter colored by year.
 
