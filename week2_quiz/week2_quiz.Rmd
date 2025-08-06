@@ -189,10 +189,10 @@ drink_df %>%
 
 ```
 
-Inspect the output of the previous step to find the separator that splits the ingredients column into three columns: ingredient, quantity, and unit.
-Make sure to convert data types to numeric when possible.
-Group the data by ingredient and unit.
-Calculate the total quantity of each ingredient.
+- Inspect the output of the previous step to find the separator that splits the ingredients column into three columns: ingredient, quantity, and unit.
+- Make sure to convert data types to numeric when possible.
+- Group the data by ingredient and unit.
+- Calculate the total quantity of each ingredient.
 
 
 ```{r drink2, exercise=TRUE}
