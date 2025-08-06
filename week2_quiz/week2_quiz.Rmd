@@ -91,6 +91,8 @@ flight_schedule <- tibble::tibble(
 )%>%
   separate(departure, into = c("hour", "minute"), sep = ":")
 
+# Your code here
+
 ```
 
 ```{r reshape-question2-solution, echo=FALSE}
@@ -157,6 +159,8 @@ phone_nr_df <- tribble(~country, ~country_code, ~national_number,
                        "China",          +86, 13555953217, 
                        "India",          +91, 8555843898)
 
+# Your code here
+
 ```
 
 ```{r international-numbers-solution, echo=FALSE}
@@ -179,6 +183,7 @@ drink_df <- tribble(~drink, ~ingredients,
                     "Cappuccino",     "milk 0.1 L; water 0.1 L; coffee 30 g; sugar 5 g")
 
 
+# Your code here
 ```
 
 
@@ -202,6 +207,7 @@ drink_df <- tribble(~drink, ~ingredients,
                     "Orange juice",   "oranges 3; sugar 20 g",                  
                     "Cappuccino",     "milk 0.1 L; water 0.1 L; coffee 30 g; sugar 5 g")
 
+# Your code here
 
 ```
 
@@ -261,6 +267,40 @@ covid_cases <- tibble::tibble(
 ```{r missing-values2-solution, echo=FALSE}
 covid_cases %>%
   replace_na(list(confirmed = 0, recovered = 0))
+```
+
+
+### 'fill'
+
+You’ve been asked to create a report that allows management to compare sales figures per quarter for two years. The problem is that the dataset **(sales_df)** contains missing values. You’ll need to impute the values in the year column so that you can visualize the data.
+
+- Inspect sales_df in the console, pay attention to the year column.
+- Use the `fill()` function to impute the year column in the correct direction.
+- Create a line plot where each year has a different color.
+
+
+```{r fill, exercise=TRUE}
+sales_df<- tribble(~year, ~quarter, ~sales,
+                    NA, "Q1", 12498,
+                   NA, "Q2", 20461,
+                   NA, "Q3", 19737,
+                   2019, "Q4", 20314,
+                   NA, "Q1", 13494,
+                   NA, "Q2", 19314,
+                   NA, "Q3", 23640,
+                   2020, "Q4", 22920)
+
+# Your code here
+```
+
+```{r fill-solution, echo=FALSE}
+
+sales_df %>%
+  fill() %>%  # Impute the year column
+  ggplot(aes(x = quarter, y = sales, color = year, group = year)) +
+  geom_line() # Create a line plot with sales per quarter colored by year.
+
+
 ```
 
 ## Pivoting: From Wide to Long
